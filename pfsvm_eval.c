@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     int decblksize=0;
     int decinblksize=0;
     int rotnum = 0;
-    int blkcorner = 0;
+    int blkcorner = 0, blkcorner_x=0, blkcorner_y=0;
 
     cpu_time();
     setbuf(stdout, 0);
@@ -251,7 +251,31 @@ int main(int argc, char **argv)
             ||(j == bx + w - 1 && i == by && j != org->width-1 && i != 0)
             ||(j == bx + w - 1 && i == by + h - 1 && j != org->width-1 && i != org->height-1))
             {
-              blkcorner++;
+              blkcorner_x = j % 4;
+              blkcorner_y = i % 4;
+              switch (blkcorner_x)
+              {
+              case 0:
+                if (blkcorner_y == 0)
+                {
+                  blkcorner = 1;
+                } //左上
+                else
+                {
+                  blkcorner = 3;
+                } //左下
+                break;
+              case 3:
+                if (blkcorner_y == 0)
+                {
+                  blkcorner = 2;
+                } //右上
+                else
+                {
+                  blkcorner = 4;
+                } //右下
+                break;
+              }//switch
               rotnum = slope(org, dec, i, j, blkcorner);
               switch(rotnum){
                 case 0:
